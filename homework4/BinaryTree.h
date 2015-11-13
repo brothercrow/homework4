@@ -14,7 +14,7 @@ protected:
 public:
     // "admin" functions
     BinaryTree()					{ rootPtr = 0; count = 0; }
-    BinaryTree(const BinaryTree<ItemType> & tree){ __ }// see assignment
+    BinaryTree(const BinaryTree<ItemType> & tree){rootPtr = copyTree(tree.rootPtr);}
     virtual ~BinaryTree()				{ clear(); }// CALL clear()		
     BinaryTree & operator=(const BinaryTree & sourceTree);
 
@@ -78,6 +78,13 @@ void BinaryTree<ItemType>::destroyTree(BinaryNode<ItemType>* nodePtr)
     //    destroy the left subtree (recursive call to destroyTree)
     //    destroy the right subtree (recursive call to destroyTree)
     //    delete nodePtr
+    if (nodePtr == 0)
+	   return;
+    destroyTree(nodePtr->getLeftPtr());
+    dstroyTree(nodePtr->getRightPtr());
+    delete nodePtr;
+    nodePtr = 0;
+    return;
 }
 
 template<class ItemType>
@@ -97,6 +104,13 @@ template<class ItemType>
 void BinaryTree<ItemType>::_inorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const
 {
     // see _preorder for similar code
+    if (nodePtr != 0)
+    {
+	   ItemType item = nodePtr->getItem();
+	   _preorder(visit, nodePtr->getLeftPtr());
+	   visit(item);
+	   _preorder(visit, nodePtr->getRightPtr());
+    }
 }
 
 //*****************************COMPLETE THIS******************************
@@ -104,6 +118,13 @@ template<class ItemType>
 void BinaryTree<ItemType>::_postorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const
 {
     // see _preorder for similar code
+    if (nodePtr != 0)
+    {
+	   ItemType item = nodePtr->getItem();
+	   _preorder(visit, nodePtr->getLeftPtr());
+	   _preorder(visit, nodePtr->getRightPtr());
+	   visit(item);
+    }
 }
 
 template<class ItemType>

@@ -6,7 +6,8 @@ class BinarySearchTree : public BinaryTree<ItemType>
 {
 private:
     //*********** ADD A POINTER TO FUNCTION MEMBER VARIABLE AS DESCRIBED ON THE ASSIGNMENT********
-
+    //template <class ItemType>
+    int(*compareCards)(const ItemType&, const ItemType&);
     // internal insert node: insert newNode in nodePtr subtree
     BinaryNode<ItemType>* _insert(BinaryNode<ItemType>* nodePtr, BinaryNode<ItemType>* newNode);
 
@@ -24,7 +25,7 @@ private:
 
 public:
     //*********** ADD A CONSTRUCTOR AS DESCRIBED ON THE ASSIGNMENT********
-
+    BinarySearchTree<ItemType>(){};
     //*********** ADD A COPY CONSTRUCTOR AS DESCRIBED ON THE ASSIGNMENT********
 
     // insert a node at the correct location
