@@ -15,7 +15,7 @@ public:
     // "admin" functions
     BinaryTree()					{ rootPtr = 0; count = 0; }
     BinaryTree(const BinaryTree<ItemType> & tree){ __ }// see assignment
-    virtual ~BinaryTree()				{ ___ }// CALL clear()		
+    virtual ~BinaryTree()				{ clear(); }// CALL clear()		
     BinaryTree & operator=(const BinaryTree & sourceTree);
 
     // common functions for all binary trees
@@ -51,6 +51,8 @@ BinaryNode<ItemType>* BinaryTree<ItemType>::copyTree(const BinaryNode<ItemType>*
     BinaryNode<ItemType>* newNodePtr = 0;
     // FILL IN SEVERAL LINES HERE USING THE ALGORITHM:
     //    If nodePtr doesn't exist (is 0) Then return 0
+    if (nodePtr == 0)
+	   return 0;
     //    
     //	Assign a new BinaryNode to newNodePtr
     //	Set the newNodePtr's data (item) to the nodePtr's item
@@ -59,7 +61,11 @@ BinaryNode<ItemType>* BinaryTree<ItemType>::copyTree(const BinaryNode<ItemType>*
     //     Set the newNodePtr's rightPtr to
     //		a recursive call to copyTree for the nodePtr's rightPtr
     //	INCREMENT count
-
+    newNodePtr = new BinaryNode;
+    newNodePtr->setItem(nodePtr->getItem());
+    newNodePtr->setLeftPtr(copyTree(nodePtr->getLeftPtr()));
+    newNodePtr->setRightPtr(copyTree(nodePtr->getRightPtr()));
+    count++;
     return newNodePtr;
 }
 
