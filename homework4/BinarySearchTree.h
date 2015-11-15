@@ -25,9 +25,9 @@ private:
 
 public:
     //*********** ADD A CONSTRUCTOR AS DESCRIBED ON THE ASSIGNMENT********
-    BinarySearchTree<ItemType>(){};
+    BinarySearchTree<ItemType>(int compare(const Itemtype&, const ItemType&){ compareCards = compare; };
     //*********** ADD A COPY CONSTRUCTOR AS DESCRIBED ON THE ASSIGNMENT********
-
+    BinarySearchTree<ItemType>(BinaryTree<ItemType>* sourceTree){ rootPtr = copyTree(sourceTree.rootPtr); };
     // insert a node at the correct location
     bool insert(const ItemType & newEntry);
     // remove a node if found
@@ -70,6 +70,11 @@ bool BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry, ItemType & re
     // If it does, assign to the returnedItem parameter the item of the 
     //     found node and return true
     // If it doesn't, return false
+    returnedItem = findNode(anEntry);
+    if (returnedItem != 0)
+	   return true;
+    else
+	   return false;
 }
 
 //NOT IN THE Tree Code Files on Catalyst, use for HW#4:
@@ -88,7 +93,15 @@ void BinarySearchTree<ItemType>::getFirst(ItemType &firstItem)
     // If the tree is empty, just return
     // FIND THE LEFT-MOST LEFT CHILD
     // WHEN you can't go left anymore, assign the node's data to firstItem
+    if (rootPtr == 0)
+	   return;
+    do
+    {
+	   if (rootPtr->getLeftPtr() != 0)
+		  firstItem = rootPtr->getLeftPtr();
 
+    } while (rootPtr->getLeftPtr() != 0)
+    return;
 }
 
 template<class ItemType>
@@ -97,6 +110,8 @@ void BinarySearchTree<ItemType>::getLast(ItemType &lastItem)
     // If the tree is empty, just return
     // FIND THE RIGHT-MOST RIGHT CHILD
     // WHEN you can't go RIGHT anymore, assign the node's data to lastItem
+    if (rootPtr == 0)
+	   return;
 
 }
 //////////////////////////// private functions //////////////////////////////////
@@ -191,6 +206,8 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::findNode(BinaryNode<ItemType>*
     // ALGORITHM:
     //       IF nodePtr doesn't exist (is 0) THEN
     //            return 0
+    if (nodePtr == 0)
+	   return 0;
     //       ELSE IF nodePtr's item > target THEN (make sure you use the compare function)
     //                return what the recursive call to findNode, for the leftPtr, returns
     //       ELSE IF nodePtr's item < target THEN (make sure you use the compare function)

@@ -7,7 +7,7 @@
 using namespace std;
 
 
-
+/*
 
 void testBST(BinarySearchTree<PTR_CARD> *ptree)
 {
@@ -62,7 +62,7 @@ void testDelete(BinarySearchTree <PTR_CARD> *ptree1,
     BinarySearchTree<PTR_CARD> *ptree2)
 {
     // fill in here as described on Prog. HW#4 assignment
-}
+};
 
 // call this function as specified near the end of HW#4 assignment:
 void deletePTR_CARD(PTR_CARD &ptrCard)
@@ -70,9 +70,9 @@ void deletePTR_CARD(PTR_CARD &ptrCard)
     if (ptrCard != 0)
 	   delete ptrCard;
     ptrCard = 0;
-}
+};
 
-
+*/
 int main()
 {
 
