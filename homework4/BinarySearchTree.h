@@ -95,13 +95,13 @@ void BinarySearchTree<ItemType>::getFirst(ItemType &firstItem)
     // WHEN you can't go left anymore, assign the node's data to firstItem
     if (rootPtr == 0)
 	   return;
-    do
+   BinaryNode<ItemType>* current = rootPtr;
+    while (!current->isLeaf())
     {
-	   if (rootPtr->getLeftPtr() != 0)
-		  firstItem = rootPtr->getLeftPtr();
-
-    } while (rootPtr->getLeftPtr() != 0)
-    return;
+		  current = current->getLeftPtr();
+    }
+    firstItem = current->getItem();
+    return; 
 }
 
 template<class ItemType>
@@ -112,7 +112,13 @@ void BinarySearchTree<ItemType>::getLast(ItemType &lastItem)
     // WHEN you can't go RIGHT anymore, assign the node's data to lastItem
     if (rootPtr == 0)
 	   return;
-
+    BinaryNode<ItemType>* current = rootPtr;
+    while (!current->isLeaf())
+    {
+	   current = current->getRightPtr();
+    }
+    firstItem = current->getItem();
+    return;
 }
 //////////////////////////// private functions //////////////////////////////////
 
@@ -208,11 +214,15 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::findNode(BinaryNode<ItemType>*
     //            return 0
     if (nodePtr == 0)
 	   return 0;
-    //       ELSE IF nodePtr's item > target THEN (make sure you use the compare function)
-    //                return what the recursive call to findNode, for the leftPtr, returns
+    else if (compareCards(nodePtr->getItem(), target) > 0)
+	  return findNode(nodePtr->getLeftPtr(), target);
+	   //       ELSE IF nodePtr's item > target THEN (make sure you use the compare function)
+	   //                return what the recursive call to findNode, for the leftPtr, returns
+    else if (compareCards(nodePtr->getItem(), target) < 0)
+	  return findNode(nodePtr->getRightPtr(), target);
     //       ELSE IF nodePtr's item < target THEN (make sure you use the compare function)
     //            return what the recursive call to findNode, for the rightPtr, returns
     //	ELSE
-    return nodePtr
+    return nodePtr;
 
 }
