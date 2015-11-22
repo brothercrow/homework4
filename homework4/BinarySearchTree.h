@@ -25,7 +25,7 @@ private:
 
 public:
     //*********** ADD A CONSTRUCTOR AS DESCRIBED ON THE ASSIGNMENT********
-    BinarySearchTree<ItemType>(int compare(const Itemtype&, const ItemType&){ compareCards = compare; };
+    BinarySearchTree<ItemType>(int compare(const ItemType&, const ItemType&)){ compareCards = compare; };
     //*********** ADD A COPY CONSTRUCTOR AS DESCRIBED ON THE ASSIGNMENT********
     BinarySearchTree<ItemType>(BinaryTree<ItemType>* sourceTree){ rootPtr = copyTree(sourceTree.rootPtr); };
     // insert a node at the correct location
@@ -70,9 +70,12 @@ bool BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry, ItemType & re
     // If it does, assign to the returnedItem parameter the item of the 
     //     found node and return true
     // If it doesn't, return false
-    returnedItem = findNode(anEntry);
-    if (returnedItem != 0)
+    BinaryNode<ItemType>* found = findNode(rootPtr, anEntry);
+    if (found != 0)
+    {
+	   returnedItem = found->getItem();
 	   return true;
+    }
     else
 	   return false;
 }
@@ -81,7 +84,7 @@ bool BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry, ItemType & re
 template<class ItemType>
 BinarySearchTree<ItemType> & BinarySearchTree<ItemType>::operator=(const BinarySearchTree<ItemType> & sourceTree)
 {
-    compare = sourceTree.compare;
+    compareCards = sourceTree.compareCards;
     this->BinaryTree::operator=(sourceTree);
     return *this;
 }
@@ -96,7 +99,7 @@ void BinarySearchTree<ItemType>::getFirst(ItemType &firstItem)
     if (rootPtr == 0)
 	   return;
    BinaryNode<ItemType>* current = rootPtr;
-    while (!current->isLeaf())
+    while (current->getLeftPtr() != 0)
     {
 		  current = current->getLeftPtr();
     }
@@ -113,11 +116,11 @@ void BinarySearchTree<ItemType>::getLast(ItemType &lastItem)
     if (rootPtr == 0)
 	   return;
     BinaryNode<ItemType>* current = rootPtr;
-    while (!current->isLeaf())
+    while (current->getRightPtr() != 0)
     {
 	   current = current->getRightPtr();
     }
-    firstItem = current->getItem();
+    lastItem = current->getItem();
     return;
 }
 //////////////////////////// private functions //////////////////////////////////
@@ -129,7 +132,8 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::_insert(BinaryNode<ItemType>* 
 {
     if (nodePtr == 0)
 	   return newNodePtr;
-    if (newNodePtr->getItem() < nodePtr->getItem()) //*****CHANGE THIS*****
+    //if (newNodePtr->getItem() < nodePtr->getItem()) //*****CHANGE THIS*****
+    if (compareCards(newNodePtr->getItem(), nodePtr->getItem()) < 0)
 	   nodePtr->setLeftPtr(_insert(nodePtr->getLeftPtr(), newNodePtr));
     else
 	   nodePtr->setRightPtr(_insert(nodePtr->getRightPtr(), newNodePtr));
@@ -145,10 +149,12 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::_remove(BinaryNode<ItemType>* 
 	   success = false;
 	   return 0;
     }
-    if (nodePtr->getItem() > target) //*****CHANGE THIS*****
+    //if (nodePtr->getItem() > target) //*****CHANGE THIS*****
+    if (compareCards(nodePtr->getItem(),target) > 0)
 	   nodePtr->setLeftPtr(_remove(nodePtr->getLeftPtr(), target, success));
-    else if (nodePtr->getItem() < target) //*****CHANGE THIS*****
-	   nodePtr->setRightPtr(_remove(nodePtr->getRightPtr(), target, success));
+    //else if (nodePtr->getItem() < target) //*****CHANGE THIS*****
+    else if (compareCards(nodePtr->getItem(), target) < 0)
+    nodePtr->setRightPtr(_remove(nodePtr->getRightPtr(), target, success));
     else	// found the node
     {
 	   nodePtr = deleteNode(nodePtr);

@@ -61,8 +61,8 @@ BinaryNode<ItemType>* BinaryTree<ItemType>::copyTree(const BinaryNode<ItemType>*
     //     Set the newNodePtr's rightPtr to
     //		a recursive call to copyTree for the nodePtr's rightPtr
     //	INCREMENT count
-    newNodePtr = new BinaryNode;
-    newNodePtr->setItem(nodePtr->getItem());
+    newNodePtr = new BinaryNode<ItemType>(nodePtr->getItem());
+    //newNodePtr->setItem(nodePtr->getItem());
     newNodePtr->setLeftPtr(copyTree(nodePtr->getLeftPtr()));
     newNodePtr->setRightPtr(copyTree(nodePtr->getRightPtr()));
     count++;
@@ -81,7 +81,7 @@ void BinaryTree<ItemType>::destroyTree(BinaryNode<ItemType>* nodePtr)
     if (nodePtr == 0)
 	   return;
     destroyTree(nodePtr->getLeftPtr());
-    dstroyTree(nodePtr->getRightPtr());
+    destroyTree(nodePtr->getRightPtr());
     delete nodePtr;
     nodePtr = 0;
     return;
@@ -107,9 +107,9 @@ void BinaryTree<ItemType>::_inorder(void visit(ItemType &), BinaryNode<ItemType>
     if (nodePtr != 0)
     {
 	   ItemType item = nodePtr->getItem();
-	   _preorder(visit, nodePtr->getLeftPtr());
+	   _inorder(visit, nodePtr->getLeftPtr());
 	   visit(item);
-	   _preorder(visit, nodePtr->getRightPtr());
+	   _inorder(visit, nodePtr->getRightPtr());
     }
 }
 
@@ -121,8 +121,8 @@ void BinaryTree<ItemType>::_postorder(void visit(ItemType &), BinaryNode<ItemTyp
     if (nodePtr != 0)
     {
 	   ItemType item = nodePtr->getItem();
-	   _preorder(visit, nodePtr->getLeftPtr());
-	   _preorder(visit, nodePtr->getRightPtr());
+	   _postorder(visit, nodePtr->getLeftPtr());
+	   _postorder(visit, nodePtr->getRightPtr());
 	   visit(item);
     }
 }
